@@ -4,7 +4,7 @@ import { useNotification } from '../../hooks'
 import Modal from '../modals/Modal'
 import CustomerForm from './CustomerForm'
 
-export default function AddCustomer({ onClose }) {
+export default function AddCustomer({ onClose, onSuccess }) {
 
     const { updateNotification } = useNotification()
     const [busy, setBusy] = useState(false)
@@ -14,7 +14,8 @@ export default function AddCustomer({ onClose }) {
         setBusy(false)
         if (error) return updateNotification('error', error)
         updateNotification('success', 'Customer added successfully!')
-        window.location.reload(false);
+        onSuccess(customer)
+        window.location.reload(false)
         onClose()
     }
     return (

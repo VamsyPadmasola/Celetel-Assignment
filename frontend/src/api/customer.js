@@ -2,7 +2,6 @@ import { catchError, getToken } from "../utils/helper";
 import client from "./client";
 
 export const createCustomer = async (customerInfo) => {
-    console.log(customerInfo)
     try {
         const { data } = await client.post("/customer/create", customerInfo);
         return data;
@@ -55,6 +54,20 @@ export const updateCustomer = async (id, formData) => {
             headers: {
                 authorization: "Bearer " + token,
                 // "content-type": "multipart/form-data",
+            },
+        });
+        return data;
+    } catch (error) {
+        return catchError(error)
+    }
+}
+
+export const searchCustomer = async (query) => {
+    const token = getToken()
+    try {
+        const { data } = await client(`/customer/search?name=${query}`, {
+            headers: {
+                authorization: "Bearer " + token,
             },
         });
         return data;

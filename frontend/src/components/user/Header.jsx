@@ -1,6 +1,6 @@
 // import { useNavigate } from "react-router-dom";
 import SearchBox from "../Interface/Search";
-import { MdNotifications } from 'react-icons/md'
+
 
 export default function Header() {
     return (

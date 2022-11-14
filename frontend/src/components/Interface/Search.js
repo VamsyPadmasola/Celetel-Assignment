@@ -1,30 +1,28 @@
-// import { useEffect, useState } from "react"
-// import { useNavigate, useLocation } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import { BiSearch } from "react-icons/bi"
 const SearchBox = () => {
 
-    // const {search : queryString} = useLocation()
+    const { search: queryString } = useLocation()
 
+    const [search, setSearch] = useState("")
 
+    const navigate = useNavigate()
 
-    // const [search, setSearch] = useState("")
+    useEffect(() => {
+        const queryParams = new URLSearchParams(search).get("search")
+        setSearch(queryParams || "")
+    }, [queryString])
+    const handleInput = e => {
+        setSearch(e.target.value)
+    }
 
-    // const navigate = useNavigate()
-
-    // useEffect(()=>{
-    //     const queryParams = new URLSearchParams(search).get("search")
-    //     setSearch(queryParams || "")
-    // }, [queryString])
-    // const handleInput = e => {
-    //     setSearch(e.target.value)
-    // }
-
-    // const handleFormSubmission = e => {
-    //     e.preventDefault()
-    //     navigate({
-    //         search: `search=${search}`,
-    //     });
-    // }
+    const handleFormSubmission = e => {
+        e.preventDefault()
+        navigate({
+            search: `search=${search}`,
+        });
+    }
     return (
         <>
             <form>

@@ -30,21 +30,6 @@ exports.removeCustomer = async (req, res) => {
     res.json({ message: "Record removed Successfully!" })
 }
 
-
-exports.getCustomers = async (req, res) => {
-    const { pageNo = 0, limit = 4 } = req.query;
-
-    const customers = await Customer.find({})
-        .sort({ createdAt: -1 })
-        .skip(parseInt(pageNo) * parseInt(limit))
-        .limit(parseInt(limit));
-
-    const profiles = customers.map((customer) => formatCustomer(customer))
-    res.json({
-        profiles,
-    })
-}
-
 exports.updateCustomer = async (req, res) => {
     const { name, email, contact, company } = req.body;
     const { customerId } = req.params
@@ -63,4 +48,32 @@ exports.updateCustomer = async (req, res) => {
 
     await customer.save()
     res.status(201).json({ customer: formatCustomer(customer) })
+}
+
+exports.searchCustomer = async (req, res) => {
+    const { name, pageNo = 0, limit = 4 } = req.query
+
+    if (!name.trim()) return sendError(res, 'Invalid Request')
+    // const result = await Actor.find({ $text: { $search: `"${query.name}"` } })
+    const result = await Customer.find({ name: { $regex: name, $options: 'i' } })
+        .sort({ createdAt: -1 })
+        .skip(parseInt(pageNo) * parseInt(limit))
+        .limit(parseInt(limit));
+
+    const customers = result.map(customer => formatCustomer(customer))
+    res.json({ results: customers })
+}
+
+exports.getCustomers = async (req, res) => {
+    const { pageNo = 0, limit = 4 } = req.query;
+
+    const customers = await Customer.find({})
+        .sort({ createdAt: -1 })
+        .skip(parseInt(pageNo) * parseInt(limit))
+        .limit(parseInt(limit));
+
+    const profiles = customers.map((customer) => formatCustomer(customer))
+    res.json({
+        profiles,
+    })
 }

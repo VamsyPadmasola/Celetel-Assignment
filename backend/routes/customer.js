@@ -1,5 +1,5 @@
 const express = require('express');
-const { createCustomer, getCustomers, removeCustomer, updateCustomer } = require('../controllers/customer');
+const { createCustomer, getCustomers, removeCustomer, updateCustomer, searchCustomer } = require('../controllers/customer');
 const { isAuth } = require('../middlewares/auth');
 const { validatePassword, customerValidator } = require('../middlewares/validator');
 const { validate } = require('../middlewares/validator');
@@ -15,4 +15,5 @@ router.post(
     updateCustomer
 );
 
+router.get('/search', isAuth, searchCustomer)
 module.exports = router; 
